@@ -26,25 +26,32 @@ for (var i = 0; i < 19; i++) {
 }
 
 // Click on chessboard
-canvas.onclick = function (e) {
-    var x = e.offsetX;
-    var y = e.offsetY;
+canvas.onclick = function(e) {
+  var x = e.offsetX;
+  var y = e.offsetY;
 
-    var i = Math.floor(x / 40);
-    var j = Math.floor(y / 40);
+  var i = Math.floor(x / 40);
+  var j = Math.floor(y / 40);
 
-    console.log(x, y);
-    console.log(i, j);
+  //   console.log(x, y);
+  //   console.log(i, j);
 
-    drawChess(i, j);
+  drawChess(i, j, isBlack);
+  isBlack = !isBlack;
 };
 
-function drawChess(i, j) {
-    var canvas = document.getElementById("chessBoard");
-    var context = canvas.getContext("2d");
-    context.beginPath();
-    context.arc(20 + 40 * i, 20 + 40 * j, 15, 0, 2 * Math.PI);
-    context.fill();
+function drawChess(i, j, isBlack) {
+  var canvas = document.getElementById("chessBoard");
+  var context = canvas.getContext("2d");
+  context.beginPath();
+  context.arc(20 + 40 * i, 20 + 40 * j, 15, 0, 2 * Math.PI);
+
+  if (isBlack) {
+    context.fillStyle = "black";
+  } else {
+    context.fillStyle = "white";
+  }
+  context.fill();
 }
 
 function judge() {

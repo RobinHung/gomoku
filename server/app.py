@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request
-from flask_socketio import SocketIO,join_room, leave_room,send
+from flask_socketio import SocketIO,join_room, leave_room,send,emit
 import uuid
 import json
 from server import helper
@@ -21,9 +21,10 @@ def new_game():
     return game_id
 
 
-@app.route('/game')
+@app.route('/game',methods=['POST'])
 def start_game():
     game_id = request.args.get('id', '')
+    print('detected id: '+game_id)
     # first person to join
     if (game_id == ''):
         game_id = new_game()
@@ -37,9 +38,22 @@ def start_game():
 def on_join(message):
     room=message
     join_room(room)
-    print(message + ' has entered the room.')
-    send(message + ' has entered the room.', room=room)
 
+@socketio.on('play')
+def on_play(move):
+    id=move['id']
+    color=move['color']
+    row=move['row']
+    column=move['column']
+    cur_game=game_repo.get_game(id)
+    if(cur_game.move(color,row,column)):
+        response_dict={}
+        response_dict['color']=color
+        response_dict['row']=row
+        response_dict['column']=column
+        emit('draw',json.dumps(response_dict),json=True,room=id)
+        if cur_game.judge(color):
+            emit('finish',str('black' if color else 'white'),room=id)
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app)

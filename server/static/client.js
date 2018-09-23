@@ -19,14 +19,18 @@ var playerColor = null; // true = black, false = white
 
 window.addEventListener("load", async () => {
   if (window.location.hash.length == 0) {
-    gameID = await (await fetch("/games", { method: "POST" })).text();
+    gameID = await (await fetch("/game", { method: "POST" })).text();
     window.location.hash = "#" + gameID;
     playerColor = true; // black
     joinGame(gameID);
   } else {
     gameID = window.location.hash.substr(1);
-    playerColor = false; // white
-    joinGame(gameID);
+    gameID = await (await fetch(`/game?id=${gameID}`, { method: "POST" })).text();
+    if(gameID=="error") alert("wrong game ID");
+    else{
+      playerColor = false; // white
+      joinGame(gameID);
+    }
   }
 });
 
@@ -52,13 +56,20 @@ canvas.onclick = function(e) {
   var j = Math.floor(y / 40);
 
   socket.emit("play", {
+    id: gameID,
+    color: playerColor,
     row: i,
     column: j
   });
 };
 
 // Receive Event from server, then draw on chessboard canvas!
-socket.on("draw", function drawChessBoard(i, j, playerColor) {
+socket.on("draw", function(json) {
+    let obj=JSON.parse(json)
+    drawChessBoard(obj.row,obj.column,obj.color)
+});
+
+function drawChessBoard(i, j, playerColor) {
   var canvas = document.getElementById("chessBoard");
   var context = canvas.getContext("2d");
   context.beginPath();
@@ -70,10 +81,10 @@ socket.on("draw", function drawChessBoard(i, j, playerColor) {
     context.fillStyle = "white";
   }
   context.fill();
-});
+}
 
 // Game Finish Signal
 // @dev: parameters to be passed...
-socket.on("finish", function gameFinish() {
-  alert("Game Finish!");
+socket.on("finish", function gameFinish(msg) {
+  alert(msg+" wins!");
 });

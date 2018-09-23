@@ -3,8 +3,11 @@ var context = canvas.getContext("2d");
 var board = []; //0:empty 1:black 2:white
 var isBlack = true;
 var isGameOver = false;
-var socket = io.connect("localhost:5000");
-socket.emit("test message");
+
+var socket=io.connect(("localhost:5000"))
+socket.emit('test', function(){
+  console.log('testing');
+})
 
 let a=1;
 let b=a*2;
@@ -32,6 +35,7 @@ for (var i = 0; i < 19; i++) {
 
 // Click on chessboard
 canvas.onclick = function (e) {
+    socket.emit("test message");
   if (isGameOver) return;
   var x = e.offsetX;
   var y = e.offsetY;

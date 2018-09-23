@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+</head>
+<body>
+    <div id="container">
+        <canvas id="chessBoard" width="760" height="760"></canvas>
+        <script type = "text/javascript"
+                src = "{{ url_for('static',filename = 'client-script.js') }}" ></script>
+    </div>
+</body>
+</html>

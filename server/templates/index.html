@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Five-in-a-fow Game!</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <link rel="stylesheet" href="../static/chess.css">
 </head>
+
 <body>
     <div id="container">
         <canvas id="chessBoard" width="760" height="760"></canvas>
-        <script type = "text/javascript"
-                src = "{{ url_for('static', filename='client.js') }}" ></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='client.js') }}"></script>
     </div>
 </body>
+
 </html>

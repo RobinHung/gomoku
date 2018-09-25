@@ -1,0 +1,10 @@
+#container {
+  margin: 0 auto;
+  width: 760px;
+  position: relative;
+}
+#chessBoard {
+  background-color: #ffc355;
+  border: 1px solid #aaaaaa;
+  box-shadow: 2px 2px 3px #aaaaaa;
+}

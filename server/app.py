@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO,join_room, leave_room,send,emit
 import uuid
 import json
-from server import helper
+import helper
 
 app = Flask(__name__)
 socketio = SocketIO(app)
